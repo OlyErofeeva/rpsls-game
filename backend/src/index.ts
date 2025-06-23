@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import { Choices } from './constants/choices'
+import { rulesMap } from './constants/rules'
 
 const PORT = process.env.PORT || 3000
 const app = express()
@@ -34,8 +35,33 @@ async function getComputersChoice(_req: Request, res: Response, next: NextFuncti
   }
 }
 
+async function createRound(req: Request, res: Response, next: NextFunction) {
+  try {
+    const playerChoice: number = req.body.player
+    const computersChoice = await getRandomizedChoice()
+
+    let roundResult: string
+    if (computersChoice.id === playerChoice) {
+      roundResult = 'tie'
+    } else {
+      const isPlayerWinner = rulesMap.get(playerChoice)?.includes(computersChoice.id)
+      roundResult = isPlayerWinner ? 'win' : 'lose'
+    }
+
+    res.json({
+      results: roundResult,
+      player: playerChoice,
+      computer: computersChoice.id,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 app.get('/choices', getChoices)
 app.get('/choice', getComputersChoice)
+app.post('/play', createRound)
+
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   res.status(500).send({ message: err.message })
 })

@@ -1,0 +1,10 @@
+.header {
+  text-align: center;
+  background-color: rgb(255, 224, 84);
+}
+
+.title {
+  margin: 0;
+  padding: 4px 12px;
+  text-transform: uppercase;
+}

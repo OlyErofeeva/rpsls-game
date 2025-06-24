@@ -1,0 +1,23 @@
+.resultTitle {
+  margin: 16px 0 4px;
+  font-weight: 600;
+}
+
+.roundChoices {
+  display: flex;
+  align-items: center;
+}
+
+.choiceMade {
+  font-size: 36px;
+}
+
+.divider {
+  margin: 0 12px;
+}
+
+.resultText {
+  margin: 4px 0;
+  font-size: 16px;
+  line-height: 1.5;
+}

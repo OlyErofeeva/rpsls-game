@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { getChoices } from '../../services/api'
 import type { Choice } from '../../types'
 import Button from '../button/button'
+import RoundResult from '../round-result/round-result'
+import { getIconByChoiceId } from '../../helpers/choice-to-icon'
 import styles from './game.module.css'
 
 type ChoicesCall = {
@@ -39,18 +41,6 @@ const Game = () => {
     }
   }
 
-  const choiceToIconMap = new Map([
-    [1, '🪨'],
-    [2, '📜'],
-    [3, '✂️'],
-    [4, '🦎'],
-    [5, '🖖'],
-  ])
-
-  function getIconByChoiceId(choiceId: number) {
-    return choiceToIconMap.get(choiceId) || '👾'
-  }
-
   return (
     <div className={styles.game}>
       <a href="https://www.samkass.com/theories/RPSSL.html" target="_blank" className={styles.rulesLink}>
@@ -70,6 +60,7 @@ const Game = () => {
               </li>
             ))}
           </ul>
+          <RoundResult />
         </>
       )}
       {choicesCallState.isLoading && <p>The game is loading ...</p>}

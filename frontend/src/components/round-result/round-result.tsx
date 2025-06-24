@@ -8,7 +8,7 @@ type Props = {
 
 const RoundResult: React.FC<Props> = ({ round }) => {
   const renderResultText = () => {
-    switch (round.results) {
+    switch (round.result) {
       case 'win': {
         return 'You win! 🎉'
       }
@@ -25,9 +25,9 @@ const RoundResult: React.FC<Props> = ({ round }) => {
     <>
       <h2 className={styles.resultTitle}>Round Result:</h2>
       <div className={styles.roundChoices}>
-        <span className={styles.choiceMade}>{getIconByChoiceId(round.player)}</span>
+        <span className={styles.choiceMade}>{getIconByChoiceId(round.playerChoiceId)}</span>
         <span className={styles.divider}>vs</span>
-        <span className={styles.choiceMade}>{getIconByChoiceId(round.computer)}</span>
+        <span className={styles.choiceMade}>{getIconByChoiceId(round.computerChoiceId)}</span>
       </div>
       <p className={styles.resultText}>{renderResultText()}</p>
     </>

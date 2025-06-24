@@ -6,7 +6,8 @@ export type Choice = {
 export type RoundResult = 'win' | 'lose' | 'tie'
 
 export type Round = {
-  results: RoundResult
-  player: number // choice id
-  computer: number // choice id
+  id: string
+  result: RoundResult
+  playerChoiceId: number
+  computerChoiceId: number
 }

@@ -8,8 +8,8 @@ type Props = {
 
 const Scoreboard: React.FC<Props> = ({ gameResults }) => {
   const renderResultText = (result: RoundResult) => {
-    // I know I could've just used text-transform: uppercase, 
-    // but I prefer to map the codes from backend, rather than 
+    // I know I could've just used text-transform: uppercase,
+    // but I prefer to map the codes from backend, rather than
     // rely on receiving them in a nice and usable format.
     switch (result) {
       case 'win': {
@@ -25,7 +25,7 @@ const Scoreboard: React.FC<Props> = ({ gameResults }) => {
   }
 
   const countByResultType = (resultType: RoundResult) => {
-    return gameResults.filter(round => round.results === resultType).length
+    return gameResults.filter(round => round.result === resultType).length
   }
 
   return (
@@ -48,12 +48,11 @@ const Scoreboard: React.FC<Props> = ({ gameResults }) => {
         </thead>
         <tbody>
           {gameResults.map(round => (
-            // TODO: add id of the round as key
-            <tr className={styles.row}>
-              <td className={styles.playerColumn}>{getIconByChoiceId(round.player)}</td>
+            <tr className={styles.row} key={round.id}>
+              <td className={styles.playerColumn}>{getIconByChoiceId(round.playerChoiceId)}</td>
               <td>vs</td>
-              <td className={styles.opponentColumn}>{getIconByChoiceId(round.computer)}</td>
-              <td className={styles.resultColumn}>{renderResultText(round.results)}</td>
+              <td className={styles.opponentColumn}>{getIconByChoiceId(round.computerChoiceId)}</td>
+              <td className={styles.resultColumn}>{renderResultText(round.result)}</td>
             </tr>
           ))}
         </tbody>

@@ -1,6 +1,13 @@
-import type { Choice, Round } from '../types'
+import { nanoid } from 'nanoid'
+import type { Choice, Round, RoundResult } from '../types'
 
 const API_BASE_URL = 'http://localhost:3000'
+
+type RoundDTO = {
+  results: RoundResult
+  player: number // choice id
+  computer: number // choice id
+}
 
 async function handleError(response: Response) {
   if (!response.ok) {
@@ -16,7 +23,7 @@ export async function getChoices(): Promise<Choice[]> {
   return choices
 }
 
-export async function createRound(choiceId: number): Promise<Round> {
+export async function createRound(choiceId: RoundDTO['player']): Promise<Round> {
   const response = await fetch(`${API_BASE_URL}/play`, {
     method: 'POST',
     headers: {
@@ -27,6 +34,12 @@ export async function createRound(choiceId: number): Promise<Round> {
     }),
   })
   await handleError(response)
-  const round = await response.json()
-  return round
+  const round: RoundDTO = await response.json()
+
+  return {
+    id: nanoid(),
+    playerChoiceId: round.player,
+    computerChoiceId: round.computer,
+    result: round.results,
+  }
 }

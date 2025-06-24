@@ -1,15 +1,14 @@
 import { getIconByChoiceId } from '../../helpers/choice-to-icon'
+import type { Round } from '../../types'
 import styles from './round-result.module.css'
 
-const RoundResult = () => {
-  const roundDummy = {
-    player: 1,
-    computer: 2,
-    results: 'win',
-  }
+type Props = {
+  round: Round
+}
 
+const RoundResult: React.FC<Props> = ({ round }) => {
   const renderResultText = () => {
-    switch (roundDummy.results) {
+    switch (round.results) {
       case 'win': {
         return 'You win! 🎉'
       }
@@ -26,9 +25,9 @@ const RoundResult = () => {
     <>
       <h2 className={styles.resultTitle}>Round Result:</h2>
       <div className={styles.roundChoices}>
-        <span className={styles.choiceMade}>{getIconByChoiceId(roundDummy.player)}</span>
+        <span className={styles.choiceMade}>{getIconByChoiceId(round.player)}</span>
         <span className={styles.divider}>vs</span>
-        <span className={styles.choiceMade}>{getIconByChoiceId(roundDummy.computer)}</span>
+        <span className={styles.choiceMade}>{getIconByChoiceId(round.computer)}</span>
       </div>
       <p className={styles.resultText}>{renderResultText()}</p>
     </>

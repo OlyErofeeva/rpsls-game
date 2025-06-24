@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { getChoices } from '../../services/api'
-import type { Choice } from '../../types'
+import { createRound, getChoices } from '../../services/api'
+import type { Choice, Round } from '../../types'
 import Button from '../button/button'
 import RoundResult from '../round-result/round-result'
 import { getIconByChoiceId } from '../../helpers/choice-to-icon'
@@ -12,9 +12,20 @@ type ChoicesCall = {
   error: unknown
 }
 
+type RoundCall = {
+  round?: Round
+  isLoading: boolean
+  error: unknown
+}
+
 const Game = () => {
   const [choicesCallState, setChoicesCallState] = useState<ChoicesCall>({
     choices: [],
+    isLoading: false,
+    error: null,
+  })
+  const [roundCallState, setRoundCallState] = useState<RoundCall>({
+    round: undefined,
     isLoading: false,
     error: null,
   })
@@ -41,6 +52,28 @@ const Game = () => {
     }
   }
 
+  async function handleChoiceClick(id: number) {
+    setRoundCallState({
+      round: undefined,
+      isLoading: true,
+      error: null,
+    })
+    try {
+      const round = await createRound(id)
+      setRoundCallState({
+        round,
+        isLoading: false,
+        error: null,
+      })
+    } catch (error) {
+      setRoundCallState({
+        round: undefined,
+        isLoading: false,
+        error: error,
+      })
+    }
+  }
+
   return (
     <div className={styles.game}>
       <a href="https://www.samkass.com/theories/RPSSL.html" target="_blank" className={styles.rulesLink}>
@@ -48,7 +81,12 @@ const Game = () => {
       </a>
 
       {choicesCallState.choices.length === 0 && !choicesCallState.isLoading && (
-        <Button caption="Play the Game" customStyles={styles.playButton} onClick={handlePlayClick} />
+        <Button
+          caption="Play the Game"
+          customStyles={styles.playButton}
+          onClick={handlePlayClick}
+          disabled={choicesCallState.isLoading}
+        />
       )}
       {choicesCallState.choices.length > 0 && (
         <>
@@ -56,11 +94,21 @@ const Game = () => {
           <ul className={styles.choices}>
             {choicesCallState.choices.map(item => (
               <li key={item.id}>
-                <Button caption={getIconByChoiceId(item.id)} onClick={() => {}} customStyles={styles.choiceButton} />
+                <Button
+                  caption={getIconByChoiceId(item.id)}
+                  onClick={() => {
+                    handleChoiceClick(item.id)
+                  }}
+                  customStyles={styles.choiceButton}
+                  disabled={roundCallState.isLoading}
+                />
               </li>
             ))}
           </ul>
-          <RoundResult />
+
+          {roundCallState.isLoading && <p>Awaiting the opponent ...</p>}
+          {roundCallState.error !== null && <p>Oops! Something went wrong, please try again</p>}
+          {roundCallState.round && <RoundResult round={roundCallState.round} />}
         </>
       )}
       {choicesCallState.isLoading && <p>The game is loading ...</p>}

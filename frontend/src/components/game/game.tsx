@@ -6,6 +6,10 @@ import RoundResult from '../round-result/round-result'
 import { getIconByChoiceId } from '../../helpers/choice-to-icon'
 import styles from './game.module.css'
 
+type Props = {
+  onRoundCreated: (round: Round) => void
+}
+
 type ChoicesCall = {
   choices: Choice[]
   isLoading: boolean
@@ -18,7 +22,7 @@ type RoundCall = {
   error: unknown
 }
 
-const Game = () => {
+const Game: React.FC<Props>= ({ onRoundCreated }) => {
   const [choicesCallState, setChoicesCallState] = useState<ChoicesCall>({
     choices: [],
     isLoading: false,
@@ -65,6 +69,7 @@ const Game = () => {
         isLoading: false,
         error: null,
       })
+      onRoundCreated(round)
     } catch (error) {
       setRoundCallState({
         round: undefined,

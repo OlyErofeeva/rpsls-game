@@ -1,24 +1,32 @@
+import type { Round, RoundResult } from '../../types'
 import { getIconByChoiceId } from '../../helpers/choice-to-icon'
 import styles from './scoreboard.module.css'
 
-const Scoreboard = () => {
-  const gameResultsDummy = [
-    {
-      player: 1,
-      computer: 2,
-      results: 'lose',
-    },
-    {
-      player: 1,
-      computer: 2,
-      results: 'lose',
-    },
-    {
-      player: 1,
-      computer: 2,
-      results: 'lose',
-    },
-  ]
+type Props = {
+  gameResults: Round[]
+}
+
+const Scoreboard: React.FC<Props> = ({ gameResults }) => {
+  const renderResultText = (result: RoundResult) => {
+    // I know I could've just used text-transform: uppercase, 
+    // but I prefer to map the codes from backend, rather than 
+    // rely on receiving them in a nice and usable format.
+    switch (result) {
+      case 'win': {
+        return 'Win'
+      }
+      case 'lose': {
+        return 'Lose'
+      }
+      case 'tie': {
+        return 'Tie'
+      }
+    }
+  }
+
+  const countByResultType = (resultType: RoundResult) => {
+    return gameResults.filter(round => round.results === resultType).length
+  }
 
   return (
     <div>
@@ -29,7 +37,7 @@ const Scoreboard = () => {
             <th scope="col" className={styles.playerColumn}>
               Player
             </th>
-            <th scope="col">10:0</th>
+            <th scope="col">{`${countByResultType('win')} : ${countByResultType('lose')}`}</th>
             <th scope="col" className={styles.opponentColumn}>
               Computer
             </th>
@@ -39,13 +47,13 @@ const Scoreboard = () => {
           </tr>
         </thead>
         <tbody>
-          {gameResultsDummy.map(round => (
+          {gameResults.map(round => (
             // TODO: add id of the round as key
             <tr className={styles.row}>
               <td className={styles.playerColumn}>{getIconByChoiceId(round.player)}</td>
               <td>vs</td>
               <td className={styles.opponentColumn}>{getIconByChoiceId(round.computer)}</td>
-              <td className={styles.resultColumn}>{round.results}</td>
+              <td className={styles.resultColumn}>{renderResultText(round.results)}</td>
             </tr>
           ))}
         </tbody>

@@ -58,6 +58,18 @@ async function createRound(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+const allowedCors = ['http://localhost:5173']
+
+app.use(function (req: Request, res: Response, next: NextFunction) {
+  const { origin } = req.headers
+  if (allowedCors.includes(origin || '')) {
+    res.header('Access-Control-Allow-Origin', origin)
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    res.header('Access-Control-Allow-Methods', 'GET,POST')
+  }
+  next()
+})
+
 app.get('/choices', getChoices)
 app.get('/choice', getComputersChoice)
 app.post('/play', createRound)

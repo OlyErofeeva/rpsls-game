@@ -1,14 +1,43 @@
+import { useState } from 'react'
+import { getChoices } from '../../services/api'
+import type { Choice } from '../../types'
 import Button from '../button/button'
 import styles from './game.module.css'
 
+type ChoicesCall = {
+  choices: Choice[]
+  isLoading: boolean
+  error: unknown
+}
+
 const Game = () => {
-  const choicesDummy = [
-    { id: 1, name: 'rock' },
-    { id: 2, name: 'paper' },
-    { id: 3, name: 'scissors' },
-    { id: 4, name: 'lizard' },
-    { id: 5, name: 'spock' },
-  ]
+  const [choicesCallState, setChoicesCallState] = useState<ChoicesCall>({
+    choices: [],
+    isLoading: false,
+    error: null,
+  })
+
+  async function handlePlayClick() {
+    setChoicesCallState(currentState => ({
+      ...currentState,
+      isLoading: true,
+      error: null,
+    }))
+    try {
+      const choices = await getChoices()
+      setChoicesCallState({
+        choices: choices,
+        isLoading: false,
+        error: null,
+      })
+    } catch (error) {
+      setChoicesCallState({
+        choices: [],
+        isLoading: false,
+        error: error,
+      })
+    }
+  }
 
   const choiceToIconMap = new Map([
     [1, '🪨'],
@@ -27,15 +56,24 @@ const Game = () => {
       <a href="https://www.samkass.com/theories/RPSSL.html" target="_blank" className={styles.rulesLink}>
         Learn the rules
       </a>
-      <Button caption="Play the Game" onClick={() => {}} customStyles={styles.playButton} />
-      <p className={styles.hint}>Click on the option to play against the computer</p>
-      <ul className={styles.choices}>
-        {choicesDummy.map(item => (
-          <li key={item.id} className={styles.choiceItem}>
-            <Button caption={getIconByChoiceId(item.id)} onClick={() => {}} customStyles={styles.choiceButton} />
-          </li>
-        ))}
-      </ul>
+
+      {choicesCallState.choices.length === 0 && !choicesCallState.isLoading && (
+        <Button caption="Play the Game" customStyles={styles.playButton} onClick={handlePlayClick} />
+      )}
+      {choicesCallState.choices.length > 0 && (
+        <>
+          <p className={styles.hint}>Click on the option to play against the computer</p>
+          <ul className={styles.choices}>
+            {choicesCallState.choices.map(item => (
+              <li key={item.id}>
+                <Button caption={getIconByChoiceId(item.id)} onClick={() => {}} customStyles={styles.choiceButton} />
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {choicesCallState.isLoading && <p>The game is loading ...</p>}
+      {choicesCallState.error !== null && <p>Oops! Something went wrong, please try again</p>}
     </div>
   )
 }

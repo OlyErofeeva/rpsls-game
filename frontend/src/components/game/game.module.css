@@ -11,12 +11,6 @@
   font-size: 24px;
 }
 
-.hint {
-  margin: 0;
-  text-align: center;
-  color: rgb(125, 125, 125);
-}
-
 .playButton {
   border-color: #ffc905;
   background-color: rgb(255, 218, 84);
@@ -25,6 +19,12 @@
 
 .playButton:hover:enabled {
   background-color: rgb(255, 204, 20);
+}
+
+.hint {
+  margin: 0;
+  text-align: center;
+  color: rgb(125, 125, 125);
 }
 
 .choices {

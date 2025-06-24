@@ -1,8 +1,15 @@
 import Header from '../header/header'
+import Game from '../game/game'
+import styles from './app.module.css'
 
 const App = () => {
   return (
-    <Header />
+    <>
+      <Header />
+      <main className={styles.content}>
+        <Game />
+      </main>
+    </>
   )
 }
 

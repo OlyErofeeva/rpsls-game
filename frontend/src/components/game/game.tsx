@@ -20,9 +20,10 @@ type RoundCall = {
   round?: Round
   isLoading: boolean
   error: unknown
+  winStreakCounter: number
 }
 
-const Game: React.FC<Props>= ({ onRoundCreated }) => {
+const Game: React.FC<Props> = ({ onRoundCreated }) => {
   const [choicesCallState, setChoicesCallState] = useState<ChoicesCall>({
     choices: [],
     isLoading: false,
@@ -32,11 +33,12 @@ const Game: React.FC<Props>= ({ onRoundCreated }) => {
     round: undefined,
     isLoading: false,
     error: null,
+    winStreakCounter: 0,
   })
 
   async function handlePlayClick() {
-    setChoicesCallState(currentState => ({
-      ...currentState,
+    setChoicesCallState(prevState => ({
+      ...prevState,
       isLoading: true,
       error: null,
     }))
@@ -57,25 +59,36 @@ const Game: React.FC<Props>= ({ onRoundCreated }) => {
   }
 
   async function handleChoiceClick(id: number) {
-    setRoundCallState({
+    setRoundCallState(prevState => ({
+      ...prevState,
       round: undefined,
       isLoading: true,
       error: null,
-    })
+    }))
     try {
       const round = await createRound(id)
-      setRoundCallState({
-        round,
-        isLoading: false,
-        error: null,
+      setRoundCallState(prevState => {
+        let updatedWinStreak
+        if (round.result === 'win') {
+          updatedWinStreak = (prevState.winStreakCounter || 0) + 1
+        } else {
+          updatedWinStreak = 0
+        }
+        return {
+          round,
+          isLoading: false,
+          error: null,
+          winStreakCounter: updatedWinStreak,
+        }
       })
       onRoundCreated(round)
     } catch (error) {
-      setRoundCallState({
+      setRoundCallState(prevState => ({
+        ...prevState,
         round: undefined,
         isLoading: false,
         error: error,
-      })
+      }))
     }
   }
 
@@ -113,7 +126,9 @@ const Game: React.FC<Props>= ({ onRoundCreated }) => {
 
           {roundCallState.isLoading && <p>Awaiting the opponent ...</p>}
           {roundCallState.error !== null && <p>Oops! Something went wrong, please try again</p>}
-          {roundCallState.round && <RoundResult round={roundCallState.round} />}
+          {roundCallState.round && (
+            <RoundResult round={roundCallState.round} winStreakCounter={roundCallState.winStreakCounter} />
+          )}
         </>
       )}
       {choicesCallState.isLoading && <p>The game is loading ...</p>}

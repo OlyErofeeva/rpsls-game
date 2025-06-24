@@ -1,12 +1,16 @@
+import { useEffect, useState } from 'react'
 import { getIconByChoiceId } from '../../helpers/choice-to-icon'
+import { getWinningStreakMessage } from '../../helpers/round-message'
 import type { Round } from '../../types'
 import styles from './round-result.module.css'
 
 type Props = {
   round: Round
+  winStreakCounter: number
 }
 
-const RoundResult: React.FC<Props> = ({ round }) => {
+const RoundResult: React.FC<Props> = ({ round, winStreakCounter }) => {
+  const [roundMessage, setRoundMessage] = useState('')
   const renderResultText = () => {
     switch (round.result) {
       case 'win': {
@@ -21,6 +25,12 @@ const RoundResult: React.FC<Props> = ({ round }) => {
     }
   }
 
+  useEffect(() => {
+    if (round.result === 'win') {
+      setRoundMessage(getWinningStreakMessage(winStreakCounter))
+    }
+  }, [round, winStreakCounter])
+
   return (
     <>
       <h2 className={styles.resultTitle}>Round Result:</h2>
@@ -30,6 +40,7 @@ const RoundResult: React.FC<Props> = ({ round }) => {
         <span className={styles.choiceMade}>{getIconByChoiceId(round.computerChoiceId)}</span>
       </div>
       <p className={styles.resultText}>{renderResultText()}</p>
+      <p className={styles.motivation}>{roundMessage}</p>
     </>
   )
 }

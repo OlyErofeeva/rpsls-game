@@ -1,14 +1,16 @@
 import type { Round, RoundResult } from '../../types'
 import { getIconByChoiceId } from '../../helpers/choice-to-icon'
+import Button from '../button/button'
 import styles from './scoreboard.module.css'
 
 type Props = {
   gameResults: Round[]
+  onReset: () => void
 }
 
-const Scoreboard: React.FC<Props> = ({ gameResults }) => {
+const Scoreboard: React.FC<Props> = ({ gameResults, onReset }) => {
   const renderResultText = (result: RoundResult) => {
-    // I know I could've just used text-transform: uppercase,
+    // I know I could've just used text-transform: capitalize,
     // but I prefer to map the codes from backend, rather than
     // rely on receiving them in a nice and usable format.
     switch (result) {
@@ -31,7 +33,12 @@ const Scoreboard: React.FC<Props> = ({ gameResults }) => {
   return (
     <div>
       <table className={styles.table}>
-        <caption className={styles.tableTitle}>10 Recent Games</caption>
+        <caption className={styles.tableTitle}>
+          <div className={styles.tableTitleBlock}>
+            <span>10 Recent Games</span>
+            <Button caption="Reset" onClick={onReset} />
+          </div>
+        </caption>
         <thead>
           <tr className={styles.headerRow}>
             <th scope="col" className={styles.playerColumn}>

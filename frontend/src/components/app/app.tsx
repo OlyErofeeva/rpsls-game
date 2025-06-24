@@ -21,6 +21,10 @@ const App = () => {
       return [round, ...recentResults]
     })
   }
+
+  const handleResetClick = () => {
+    setGameResults([])
+  }
   
   useEffect(() => {
     localStorage.setItem('localResults', JSON.stringify(gameResults))
@@ -31,7 +35,7 @@ const App = () => {
       <Header />
       <main className={styles.content}>
         <Game onRoundCreated={handleRoundCreated} />
-        <Scoreboard gameResults={gameResults} />
+        <Scoreboard gameResults={gameResults} onReset={handleResetClick} />
       </main>
     </>
   )

@@ -21,6 +21,8 @@ async function getRandomizedChoice() {
   const computersChoiceId = Math.ceil(randomNumber / 20)
   const computersChoice = Choices.find(item => item.id === computersChoiceId)
   if (!computersChoice) {
+    console.log('random number service response:')
+    console.log(randomNumberResponse)
     throw new Error('An error occured while generating computers choice')
   }
   return computersChoice

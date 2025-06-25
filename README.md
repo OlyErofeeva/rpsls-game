@@ -16,10 +16,10 @@ Inspired by The Big Bang Theory’s twist on Rock-Paper-Scissors 🖖
 
 ## 🎮 Game Rules
 
-- 🪨 Rock crushes Lizard & Scissors
-- 📜 Paper covers Rock & disproves Spock \
-- ✂️ Scissors cuts Paper & decapitates Lizard \
-- 🦎 Lizard poisons Spock & eats Paper \
+- 🪨 Rock crushes Lizard & Scissors 
+- 📜 Paper covers Rock & disproves Spock 
+- ✂️ Scissors cuts Paper & decapitates Lizard 
+- 🦎 Lizard poisons Spock & eats Paper 
 - 🖖 Spock smashes Scissors & vaporizes Rock 
 
 ## 📸 Screenshots

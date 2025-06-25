@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getIconByChoiceId } from '../../helpers/choice-to-icon'
-import { getWinningStreakMessage } from '../../helpers/round-message'
+import { getMotivationalMessage, getWinningStreakMessage } from '../../helpers/round-message'
 import type { Round } from '../../types'
 import styles from './round-result.module.css'
 
@@ -28,6 +28,10 @@ const RoundResult: React.FC<Props> = ({ round, winStreakCounter }) => {
   useEffect(() => {
     if (round.result === 'win') {
       setRoundMessage(getWinningStreakMessage(winStreakCounter))
+    } else if (round.result === 'lose') {
+      setRoundMessage(getMotivationalMessage())
+    } else {
+      setRoundMessage('')
     }
   }, [round, winStreakCounter])
 

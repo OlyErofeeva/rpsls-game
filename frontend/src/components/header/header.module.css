@@ -5,6 +5,18 @@
 
 .title {
   margin: 0;
-  padding: 4px 12px;
+  padding: 8px 12px;
   text-transform: uppercase;
+}
+
+@media screen and (max-width: 430px) {
+  .title {
+    font-size: 28px;
+  }
+}
+
+@media screen and (max-width: 385px) {
+  .title {
+    padding: 4px;
+  }
 }

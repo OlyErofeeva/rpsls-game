@@ -8,7 +8,9 @@
   cursor: pointer;
   font-family: inherit;
   font-size: 14px;
-  transition: background-color .15s ease-in;
+  transition: background-color, opacity .1s ease-in;
+  color: #000;
+  opacity: 1;
 }
 
 .button:hover:enabled {
@@ -22,5 +24,6 @@
 }
 
 .button:disabled {
-  transition: 0.1s ease-in-out;
+  opacity: .6;
+  cursor: default;
 }

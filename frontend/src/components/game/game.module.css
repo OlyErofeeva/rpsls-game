@@ -8,6 +8,11 @@
 .rulesLink {
   display: block;
   font-size: 24px;
+  color: #ecad00;
+}
+
+.rulesLink:visited {
+  color: #8a8a8a;
 }
 
 .playButton {
@@ -23,7 +28,7 @@
 .hint {
   margin: 0;
   text-align: center;
-  color: rgb(125, 125, 125);
+  color: #8a8a8a;
 }
 
 .choices {
@@ -36,4 +41,36 @@
 
 .choiceButton {
   font-size: 36px;
+}
+
+@media screen and (max-width: 430px) {
+  .choices {
+    gap: 8px;
+  }
+
+  .choiceButton {
+    font-size: 32px;
+  }
+}
+
+@media screen and (max-width: 385px) {
+  .choices {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    justify-items: start;
+  }
+
+  .choiceItem {
+    grid-column: span 2;
+  }
+
+  .choiceItem:nth-last-child(2) {
+    grid-column: span 3;
+    justify-self: right;
+  }
+
+  .choiceItem:nth-last-child(1) {
+    grid-column: span 3;
+    justify-self: left;
+  }
 }

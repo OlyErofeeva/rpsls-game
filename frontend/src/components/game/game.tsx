@@ -111,7 +111,7 @@ const Game: React.FC<Props> = ({ onRoundCreated }) => {
           <p className={styles.hint}>Click on the option to play against the computer</p>
           <ul className={styles.choices}>
             {choicesCallState.choices.map(item => (
-              <li key={item.id}>
+              <li key={item.id} className={styles.choiceItem}>
                 <Button
                   caption={getIconByChoiceId(item.id)}
                   onClick={() => {
